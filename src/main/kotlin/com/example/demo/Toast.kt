@@ -7,6 +7,7 @@ import javafx.animation.TranslateTransition
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.event.EventHandler
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.Label
@@ -25,10 +26,21 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.util.Duration
 import java.io.File
+import javax.swing.text.Position
 
 enum class ImageStyle {
 
     CIRCLE, RECTANGLE
+}
+
+
+
+enum class Position{
+    LEFT_BOTTOM,
+    LEFT_TOP,
+    RIGHT_BOTTOM,
+    RIGHT_TOP
+
 }
 
 class Config {
@@ -39,7 +51,7 @@ class Config {
     var message = "MESSAGE"
     var appName = "APP NAME"
     var image = "https://sun9-14.userapi.com/OmWPhIb7r1GBgFMJ5SrwlAP89OBQrwdcMNbBww/RSphMj3MChA.jpg"
-
+    var position = com.example.demo.Position.LEFT_BOTTOM
 
 }
 
@@ -52,6 +64,7 @@ class Toast {
 
     class Builder {
         private var config = Config()
+
 
 
         fun setTitle(str: String): Builder {
@@ -84,8 +97,6 @@ class Toast {
 
     private fun build() {
         windows.initStyle(StageStyle.TRANSPARENT)
-        windows.x=500.0
-        windows.y = 100.0
         val width = 400.0
         val height = 100.0
 
@@ -93,6 +104,9 @@ class Toast {
 
 
         root.style = "-fx-background-color: Black"
+
+        root.padding = Insets(10.0, 10.0, 10.0, 10.0)
+        
         root.setPrefSize(width, height)
 
 
@@ -104,6 +118,7 @@ class Toast {
         val title = Label(config.title)
         val message = Label(config.message)
         val appName = Label(config.appName)
+
         title.style="-fx-background-color: linear-gradient(to right bottom, #FBF2EB, #352A3B);\n" +
                 "-fx-text-fill: black;\n" +
                 "-fx-font-weight:bold;"
@@ -127,7 +142,7 @@ class Toast {
         }
 
         val iconBorder = if (config.imageType == ImageStyle.RECTANGLE) {
-            Rectangle(100.0, 100.0)
+            Rectangle(70.0, 70.0)
         }
         else {
             Circle(50.0, 50.0, 50.0)
@@ -138,13 +153,31 @@ class Toast {
 
     private fun openAnimation() {
         val alt_anim = TranslateTransition(Duration.millis(20000.0), root)
-        alt_anim.fromY = 100.0
-        alt_anim.toY = -50.0
-        alt_anim.fromX = 0.0
-        alt_anim.toX = 0.0
-        alt_anim.setAutoReverse(false)
+        if (config.position == com.example.demo.Position.RIGHT_TOP){
+            windows.x = 765.0 + windows.width
+            windows.y=0.0
+            alt_anim.fromY = -100.0
+            alt_anim.toY = 50.0
+            }
+        else if(config.position == com.example.demo.Position.LEFT_TOP){
+            windows.x = 00.0
+            windows.y=00.0
+            alt_anim.fromY = -100.0
+            alt_anim.toY = 50.0
+        }
+        if(config.position == com.example.demo.Position.RIGHT_BOTTOM){
+            windows.x= 710.0 + windows.width
+            windows.y=660.0 + windows.height
+            alt_anim.fromY = 100.0
+            alt_anim.toY = -50.0
+        }
+        else if(config.position == com.example.demo.Position.LEFT_BOTTOM){
+            windows.x= 00.0
+            windows.y=765.0
+            alt_anim.fromY = 100.0
+            alt_anim.toY = -50.0
+        }
         alt_anim.play()
-
     }
     private fun closeAnimation() {
         val anim = FadeTransition(Duration.millis(1500.0), root)
