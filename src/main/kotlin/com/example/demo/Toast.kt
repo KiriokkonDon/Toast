@@ -1,15 +1,14 @@
 package com.example.demo
 
 import javafx.animation.FadeTransition
-import javafx.animation.Interpolator
-import javafx.animation.Timeline
 import javafx.animation.TranslateTransition
 import javafx.application.Application
 import javafx.application.Platform
+import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Insets
-import javafx.geometry.Pos
 import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
@@ -21,12 +20,10 @@ import javafx.scene.paint.Color
 import javafx.scene.paint.ImagePattern
 import javafx.scene.shape.Circle
 import javafx.scene.shape.Rectangle
-import javafx.scene.text.Font
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.util.Duration
 import java.io.File
-import javax.swing.text.Position
 
 enum class ImageStyle {
 
@@ -52,7 +49,6 @@ class Config {
     var appName = "APP NAME"
     var image = "https://sun9-14.userapi.com/OmWPhIb7r1GBgFMJ5SrwlAP89OBQrwdcMNbBww/RSphMj3MChA.jpg"
     var position = com.example.demo.Position.LEFT_BOTTOM
-
 }
 
 class Toast {
@@ -83,7 +79,8 @@ class Toast {
         }
 
 
-        fun build(): Toast  {
+
+            fun build(): Toast  {
             var toast = Toast()
             toast.config = config
             toast.build()
@@ -96,6 +93,14 @@ class Toast {
 
 
     private fun build() {
+
+        var btn = Button("Close")
+        btn.style = "-fx-background-color: Grey ; -fx-font-weight:bold;"
+        btn.onAction = EventHandler {
+            windows.close()
+        }
+        root.children.add(btn)
+
         windows.initStyle(StageStyle.TRANSPARENT)
         val width = 400.0
         val height = 100.0
@@ -104,20 +109,22 @@ class Toast {
 
 
         root.style = "-fx-background-color: Black"
-
         root.padding = Insets(10.0, 10.0, 10.0, 10.0)
-        
         root.setPrefSize(width, height)
 
 
-
         setImage()
+
+
+
 
         val vbox = VBox()
 
         val title = Label(config.title)
         val message = Label(config.message)
         val appName = Label(config.appName)
+
+
 
         title.style="-fx-background-color: linear-gradient(to right bottom, #FBF2EB, #352A3B);\n" +
                 "-fx-text-fill: black;\n" +
@@ -128,7 +135,7 @@ class Toast {
         appName.style="-fx-background-color: linear-gradient(to right bottom, #FBF2EB, #352A3B);\n" +
                 "-fx-text-fill: black;\n" +
                 "-fx-font-weight:bold;"
-        vbox.children.addAll(title, message, appName)
+        vbox.children.addAll(title, message, appName,btn)
         box.children.add(vbox)
         root.center = box
 
@@ -203,7 +210,9 @@ class Toast {
             closeAnimation()
         }
         Thread(thread).start()
+
     }
+
 
 }
 
@@ -226,7 +235,8 @@ class SomeClass: Application() {
             .setAppName("Заебалась")
             .build()
         toast.start()
-    }
+
+        }
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
