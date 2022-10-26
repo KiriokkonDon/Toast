@@ -13,6 +13,7 @@ import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer
@@ -48,7 +49,7 @@ class Config {
     var message = "MESSAGE"
     var appName = "APP NAME"
     var image = "https://sun9-14.userapi.com/OmWPhIb7r1GBgFMJ5SrwlAP89OBQrwdcMNbBww/RSphMj3MChA.jpg"
-    var position = com.example.demo.Position.LEFT_BOTTOM
+    var position = com.example.demo.Position.RIGHT_BOTTOM
 }
 
 class Toast {
@@ -57,11 +58,8 @@ class Toast {
     private var root = BorderPane()
     private var box = HBox()
 
-
     class Builder {
         private var config = Config()
-
-
 
         fun setTitle(str: String): Builder {
             config.title = str
@@ -77,8 +75,6 @@ class Toast {
             config.appName = str
             return this
         }
-
-
 
             fun build(): Toast  {
             var toast = Toast()
@@ -102,21 +98,14 @@ class Toast {
         root.children.add(btn)
 
         windows.initStyle(StageStyle.TRANSPARENT)
-        val width = 400.0
-        val height = 100.0
 
-        windows.scene = Scene(root, width, height,Color.TRANSPARENT)
 
+        windows.scene = Scene(root,Color.TRANSPARENT)
 
         root.style = "-fx-background-color: Black"
         root.padding = Insets(10.0, 10.0, 10.0, 10.0)
-        root.setPrefSize(width, height)
-
 
         setImage()
-
-
-
 
         val vbox = VBox()
 
@@ -135,13 +124,15 @@ class Toast {
         appName.style="-fx-background-color: linear-gradient(to right bottom, #FBF2EB, #352A3B);\n" +
                 "-fx-text-fill: black;\n" +
                 "-fx-font-weight:bold;"
+
+
+
         vbox.children.addAll(title, message, appName,btn)
         box.children.add(vbox)
         root.center = box
 
 
     }
-
 
     private fun setImage() {
         if (config.image.isEmpty()) {
@@ -230,12 +221,11 @@ class SomeClass: Application() {
     override fun start(p0: Stage?) {
         music()
         var toast = Toast.Builder()
-            .setTitle("Как же")
-            .setMessage("Я")
-            .setAppName("Заебалась")
+            .setTitle("Каждый в цирке думает, что знает в цирке,")
+            .setMessage("но не каждый, что в цирке знает, ")
+            .setAppName("что в цирке не каждый знает думает.")
             .build()
         toast.start()
-
         }
     companion object {
         @JvmStatic
